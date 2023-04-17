@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>ToDo List</h1>
+      <input type="text" id="todo" />
+      <button onclick="addTodoList()">Add</button>
+      <p id="todos"></p>
+    </div>
+
+    <script>
+      let todos = []; // khởi tạo mảng rỗng để chứa các task
+      function addTodoList() {
+        let todo = document.getElementById("todo").value.trim(); // lấy ra value từ ô input
+        if (todo) {
+          // kiểm tra nếu có dữ liệu thì làm tiếp
+          todos.unshift(todo); // thêm vào đầu mảng
+          document.getElementById("todo").value = ""; // làm sạch ô input
+        }
+
+        renderTodoList(); // goij hàm render
+      }
+
+      function renderTodoList() {
+        // tại sao phải tách -> hàm này được tái sử dụng
+        let todo = "";
+        todos.map((value, index) => {
+          // nối chuỗi tạo ra dữ liệu
+          todo += `<span> ${value} </span> `;
+          todo += `<button onclick="deleteTodo(${index})"> del </button>`;
+          todo += `<button onclick="updateTodo(${index})"> update </button>`;
+          todo += "<br/>";
+        });
+        document.getElementById("todos").innerHTML = todo; // in dữ liệu ra html
+      }
+
+      function deleteTodo(vt) {
+        todos = todos.filter((value, index) => {
+          // lấy ra các phần tử có id khác id truyền vào( tương đương chúng ta đã xóa nó đi )
+          return index !== vt;
+        });
+        renderTodoList(); // gọi lại hàm render để làm mới html khi đã xóa
+      }
+
+      function updateTodo(vt) {
+        if (document.getElementById("todo").value.trim()) // nêú ô input có dữ liệu thì làm tiếp
+          todos[vt] = document.getElementById("todo").value; // lấy dữ liệu từ ô input và update
+        renderTodoList(); // gọi lại hàm render để làm mới html khi đã update
+      }
+    </script>
+  </body>
+</html>
